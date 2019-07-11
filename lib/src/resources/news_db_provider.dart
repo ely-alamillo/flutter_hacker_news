@@ -1,3 +1,4 @@
+import 'package:hacker_news/src/resources/repository.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -5,9 +6,18 @@ import 'package:path/path.dart';
 import 'dart:async';
 import '../models/item_model.dart';
 
-class NewsDbProvider {
+class NewsDbProvider implements Source, Cache {
   // comes from sqflite
   Database db;
+
+  NewsDbProvider() {
+    init();
+  }
+
+  Future<List<int>> fetchTopIds() {
+    // TODO: implement fetchTopIds
+    return null;
+  }
 
   void init() async {
     Directory documentsDir = await getApplicationDocumentsDirectory();
@@ -57,3 +67,5 @@ class NewsDbProvider {
     return db.insert('Items', item.toMapForDb());
   }
 }
+
+final newsDbProvider = NewsDbProvider();
