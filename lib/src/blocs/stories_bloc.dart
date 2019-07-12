@@ -14,6 +14,16 @@ class StoriesBloc {
     _topIds.sink.add(ids);
   }
 
+  _itemsTransformer() {
+    return ScanStreamTransformer(
+      (Map<int, Future<ItemModel>> cache, int id, _) {
+        cache[id] = _repository.fetchItem(id);
+        return cache;
+      },
+      <int, Future<ItemModel>>{},
+    );
+  }
+
   dispose() {
     _topIds.close();
   }
