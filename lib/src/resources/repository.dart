@@ -22,7 +22,7 @@ class Repository {
 
   Future<ItemModel> fetchItem(int id) async {
     ItemModel item;
-    Source source;
+    var source;
 
     // find stuff in any source
     for (source in sources) {
@@ -34,7 +34,9 @@ class Repository {
 
     // add stuff to cache
     for (var cache in caches) {
-      cache.addItem(item);
+      if (cache != source) {
+        cache.addItem(item);
+      }
     }
     return item;
   }
