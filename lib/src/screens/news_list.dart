@@ -3,6 +3,7 @@ import 'package:hacker_news/src/blocs/stories_bloc.dart';
 import 'dart:async';
 
 import 'package:hacker_news/src/blocs/stories_provider.dart';
+import 'package:hacker_news/src/widgets/news_list_tile.dart';
 
 class NewsList extends StatelessWidget {
   @override
@@ -32,7 +33,10 @@ Widget buildList(StoriesBloc bloc) {
       return ListView.builder(
         itemCount: snapshot.data.length,
         itemBuilder: (context, int idx) {
-          return Text('${snapshot.data[idx]}');
+          bloc.fetchItem(snapshot.data[idx]);
+          return NewsListTile(
+            itemId: snapshot.data[idx],
+          );
         },
       );
     },
