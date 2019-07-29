@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hacker_news/src/blocs/comments_bloc.dart';
 import 'package:hacker_news/src/blocs/comments_provider.dart';
+import 'package:hacker_news/src/blocs/stories_bloc.dart';
 import 'package:hacker_news/src/blocs/stories_provider.dart';
 import 'package:hacker_news/src/screens/news_detail.dart';
 import 'package:hacker_news/src/screens/news_list.dart';
@@ -22,6 +23,9 @@ class App extends StatelessWidget {
     if (settings.name == '/') {
       return MaterialPageRoute(
         builder: (context) {
+          final storiesBloc = StoriesProvider.of(context);
+          storiesBloc.fetchTopIds();
+
           return NewsList();
         },
       );
