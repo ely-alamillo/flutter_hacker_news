@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hacker_news/src/blocs/comments_bloc.dart';
 import 'package:hacker_news/src/blocs/comments_provider.dart';
 import 'package:hacker_news/src/models/item_model.dart';
+import 'package:hacker_news/src/screens/news_list.dart';
+import 'package:hacker_news/src/widgets/comment.dart';
 
 class NewsDetail extends StatelessWidget {
   final int itemId;
@@ -36,12 +38,28 @@ class NewsDetail extends StatelessWidget {
             if (!snapshot.hasData) {
               return Text('Loading....');
             }
-
-            return buildTitle(itemSnaphshot.data);
+            return buildList(itemSnaphshot.data, snapshot.data);
           },
         );
       },
     );
+  }
+
+  Widget buildList(ItemModel item, Map<int, Future<ItemModel>> itemMap) {
+    final children = <Widget>[];
+
+    children.add(buildTitle(item));
+
+    final commentsList = item.kids.map((kidId) {
+      return Comment(
+        itemId: kidId,
+        itemMap: itemMap,
+        depth: 0,
+      );
+    }).toList();
+    children.addAll(commentsList);
+
+    return ListView(children: children);
   }
 
   Widget buildTitle(ItemModel item) {
@@ -49,7 +67,7 @@ class NewsDetail extends StatelessWidget {
       alignment: Alignment.topCenter,
       margin: EdgeInsets.all(10.0),
       child: Text(
-        item.title,
+        item.title != null ? item.title : '',
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 20.0,
